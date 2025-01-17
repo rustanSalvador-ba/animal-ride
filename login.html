@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Corona Warface</title>
+  <meta charset="utf-8">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="imagens/favicon-32x32.png" />
+  <link rel="stylesheet" href="plugins/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+  <script src="plugins/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/util.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse painel">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="animal-ride" style="color: white">Animal Ride</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            
+          <li><a href="animal-ride" ><span class="glyphicon glyphicon-home"></span> Lobby</a></li>
+          <li><a href="ranking" ><span class="glyphicon glyphicon-star"></span> Ranking</a></li> 
+          <li><a href="contact" ><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+          <li><a href="about" ><span class="glyphicon glyphicon-question-sign"></span> About</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <!-- <li><a href="login" onclick="logout()" ><span class="glyphicon glyphicon-log-out"></span> Logout</a> -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div class="painel_login">
+  <br>
+  <h4 class="text-center"><span class="glyphicon glyphicon-lock"></span> Login</h4>
+  <form role="form" id="form-login" >
+    <div class="form-group">
+      <label for="email"  class="input_label"><span class="glyphicon glyphicon-user"></span> E-Mail</label>
+      <input type="email" class="form-control input_text" id="email" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+      <label for="psw" class="input_label"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
+      <input type="password" class="form-control input_text" id="psw" placeholder="Enter password" autocomplete="current-password" required maxlength="6">
+    </div>
+    <div class="form-group checkbox text-left">
+      <label class="input_label"><input type="checkbox" value="" checked id="remember">Remember me</label>
+    </div>
+    <br>
+    <div class="form-group">
+      <button type="button" class="btn btn-info pull-right login_button" onclick="login()"><span class="glyphicon glyphicon-off"></span> Login</button>
+    </div>
+  </form>
+  <div class="text-left">
+    <span style="color:white;" class="input_label">Not a member? <a href="register">Sign Up</a></span><br>
+    <span style="color:white;" class="input_label">Forgot <a href="reset-password">Password?</a></span>
+    <br>
+  </div>
+  <br>
+</div>
+  
+  <footer>
+    Animal Ride
+  </footer>
+</body>
+
+<script>
+  
+  let email = queryString("email")
+  let password = queryString("password")
+  let data = {
+    'email':email,
+    'password':password
+  }
+ 
+
+
+  function login(){
+    url="login.html?"+btoa("email="+$('#email').val()+"&password="+$('#psw').val());
+    window.location.href = url;
+  }
+
+  loginUser(data)
+
+    function loginUser(data){
+    
+      let response = server('POST', 'api/login', data)
+      //console.log("response login:", response.data)
+      console.log("response token:", response)
+    //  window.location.href="main.html?id="+response
+    }
+  
+  </script>
+  <link rel="stylesheet" href="css/Styles.css">

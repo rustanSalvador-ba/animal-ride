@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ranking</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-inverse painel">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="animal-ride" style="color: white">Animal Ride</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+            
+          <li><a href="animal-ride" ><span class="glyphicon glyphicon-home"></span> Lobby</a></li>
+          <li><a href="ranking" ><span class="glyphicon glyphicon-star"></span> Ranking</a></li> 
+          <li><a href="contact" ><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+          <li><a href="about" ><span class="glyphicon glyphicon-question-sign"></span> About</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+          <li><a href="login" onclick="logout()" ><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+    <div class="container" style="background-color:  white;">
+        <h2>Players</h2>
+        <p>This is the Ranking of the best players.</p>            
+        <table class="table table-striped">
+        <thead>
+            <tr>
+            <th>Position</th>
+            <th>Username</th>
+            <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <th>1º</th>
+            <td>Felipe</td>
+            <td>100</td>
+            </tr>
+            <tr>
+            <th>2º</th>
+            <td>Sarah</td>
+            <td>50</td>
+            </tr>
+            <tr>
+            <th>3º</th>
+            <td>Milla</td>
+            <td>0</td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+  <footer>
+    Animal Ride
+  </footer>
+</body>
+</html>
+<link rel="stylesheet" href="css/Styles.css">

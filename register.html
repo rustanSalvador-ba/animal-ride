@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Animal Ride</title>
+  <meta charset="utf-8">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="imagens/favicon-32x32.png" />
+  <link rel="stylesheet" href="plugins/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="plugins/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+  <script src="js/util.js"></script>
+</head>
+
+
+<body>
+  <nav class="navbar navbar-inverse painel">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="animal-ride" style="color: white">Animal Ride</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="animal-ride" ><span class="glyphicon glyphicon-home"></span> Lobby</a></li>
+          <li><a href="ranking" ><span class="glyphicon glyphicon-star"></span> Ranking</a></li> 
+          <li><a href="contact" ><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+          <li><a href="about" ><span class="glyphicon glyphicon-question-sign"></span> About</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="painel_login">
+  <br>
+  <h4 class="text-center"><span class="glyphicon glyphicon-user"></span> Register</h4>
+  <br>
+
+  <form id="form-register">
+    <div class="form-group">
+      <label for="name" class="input_label"><span class="glyphicon glyphicon-user"></span> Username:</label>
+      <input type="text" class="form-control input_text" autocomplete="name" id="name" required>
+    </div>
+    <div class="form-group">
+      <label for="email" class="input_label"><span class="glyphicon glyphicon-envelope"></span> Email address:</label>
+      <input type="email" class="form-control input_text"autocomplete="email-register" id="email-register" required>
+    </div>
+    <div class="form-group">
+      <label for="password" class="input_label"><span class="glyphicon glyphicon-eye-open"></span> Password:</label>
+      <input type="password" class="form-control input_text" id="password" autocomplete="current-password" min="6" maxlength="6" required>
+    </div>
+    <div class="form-group">
+      <label for="passwordConfirm" class="input_label"><span class="glyphicon glyphicon-eye-open"></span> Password Confirm:</label>
+      <input type="password" class="form-control input_text" id="passwordConfirm" autocomplete="current-password" min="6" maxlength="6" required>
+    </div>
+    <div>
+      <button type="button" class="btn btn-info pull-right login_button" onclick="register(event)">Register</button>
+    </div>
+    <div class="text-left"><br>
+      <span style="color:white;" class="input_label">Is a member? <a href="login">Sign In</a></span><br>
+    </div>
+  <br>  
+ 
+</form>
+</div>
+
+  <footer>
+    Animal Ride
+  </footer>
+</body>
+
+<script>
+
+  function register(event) {
+
+   if ($('#name').val()=="" ||+ $('#email-register').val()==""|| $('#password').val()==""|| $('#passwordConfirm').val()==""){
+    swal("Preencha os campos obrigatórios.")
+   } else { 
+
+    if ($('#password').val()!=$('#passwordConfirm').val()){
+      swal("Confirmação de senha incorreta.")
+      return;
+    }
+   
+    let name = $('#name').val()
+    let email = $('#email-register').val()
+    let password = $('#password').val()
+    let data = {'name':name, 'email':email, 'password':password}
+
+    console.log(data)
+
+    if (name!==undefined && email!==undefined && password!==undefined){
+      createUser(data)
+    }
+  }
+   
+  }
+
+    function createUser(data){
+      console.log(data)
+      let response = server('POST', 'api/register', data)
+      swal(response)
+      console.log(response)
+     // window.location.href="main.html?id=0"
+    }
+  
+  </script>
+  <link rel="stylesheet" href="css/Styles.css">

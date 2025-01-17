@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Animal Ride</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="imagens/favicon-32x32.png" />
+  
+  <link rel="stylesheet" href="plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="js/util.js"></script>
+  
+ 
+</head>
+  <body>
+    <nav class="navbar navbar-inverse painel">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+          <a class="navbar-brand" href="animal-ride" style="color: white">Animal Ride</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+              
+            <li><a href="animal-ride" ><span class="glyphicon glyphicon-home"></span> Lobby</a></li>
+            <li><a href="ranking" ><span class="glyphicon glyphicon-star"></span> Ranking</a></li> 
+            <li><a href="contact" ><span class="glyphicon glyphicon-envelope"></span> Contact</a></li>
+            <li><a href="about" ><span class="glyphicon glyphicon-question-sign"></span> About</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <!-- <li><a href="register" class="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+            <li><a href="login" class="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
+            <li><a href="login" class="logout" onclick="logout()" ><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </nav>
+  
+  <div>
+    <button id="start" type="button" class="btn btn-info">Play Now</button>
+  </div>
+
+  <div id="container">
+    <div id="screen" ></div>
+  </div>
+  
+  <footer>
+    Animal Ride
+  </footer>
+</body>
+</html>
+<script type="module">
+  
+import * as me from './node_modules/melonjs/dist/melonjs.module.js'
+//import * as me from 'melonjs/dist/melonjs.module.js';
+
+import TitleScreen from './js/stage/title.js';
+import PlayScreen from './js/stage/play.js';
+import {PlayerEntity, CoinEntity, EnemyEntity} from './js/renderables/entities.js';
+//import PlayerEntity from "./js/renderables/player-entity.js";
+//import CoinEntity from "./js/renderables/coin-entity.js";
+//import EnemyEntity from "./js/renderables/enemy-entity.js";
+
+import DataManifest from './manifest.js';
+
+let data = getUser()
+
+if (data.online === false) {
+  window.location.href="login"
+}
+
+
+/* Game namespace */
+me.device.onReady(() => {
+
+    // Initialize the video.
+    if (!me.video.init(640, 480, {parent : "screen", scale : "auto"})) {
+        alert("Your browser does not support HTML5 canvas.");
+        return;
+    }
+
+    // initialize the debug plugin in development mode.
+    // import('./js/plugin/debug/debugPanel.js').then((plugin) => {
+    //     // automatically register the debug panel
+    //     me.utils.function.defer(me.plugin.register, this, plugin.DebugPanelPlugin, "debugPanel");
+    // });
+
+
+    // Initialize the audio.
+   // me.audio.init("mp3,ogg");
+
+    // allow cross-origin for image/texture loading
+    me.loader.crossOrigin = "anonymous";
+
+    // set and load all resources.
+    me.loader.preload(DataManifest, function() {
+        // set the user defined game stages
+        me.state.set(me.state.MENU, new TitleScreen());
+        me.state.set(me.state.PLAY, new PlayScreen());
+
+
+        // set a global fading transition for the screen
+        me.state.transition("fade", "#FFFFFF", 250);
+
+        me.pool.register("mainPlayer", PlayerEntity);
+		me.pool.register("CoinEntity", CoinEntity);
+		 me.pool.register("EnemyEntity", EnemyEntity);
+		// add our player entity in the entity pool
+		// me.pool.register("mainPlayer", PlayerEntity);
+		// me.pool.register("CoinEntity", CoinEntity);
+		// me.pool.register("EnemyEntity", EnemyEntity);
+
+
+        // enable the keyboard
+        me.input.bindKey(me.input.KEY.LEFT,  "left");
+        me.input.bindKey(me.input.KEY.RIGHT, "right");
+        // map X, Up Arrow and Space for jump
+        me.input.bindKey(me.input.KEY.X,      "jump", true);
+        me.input.bindKey(me.input.KEY.UP,     "jump", true);
+        me.input.bindKey(me.input.KEY.SPACE,  "jump", true);
+
+        // Start the game.
+        me.state.change(me.state.MENU);
+
+        document.getElementById('start').addEventListener("click",()=>me.state.change(me.state.PLAY))
+    });
+
+});
+
+
+
+</script>
+
+<link rel="stylesheet" href="css/Styles.css">
