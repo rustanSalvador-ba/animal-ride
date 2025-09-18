@@ -54,11 +54,6 @@ function App() {
          
           
            socket.on('connect', () => {
-console.log(players)
-                // if (temRegistro(players, param) || temRegistro(players, getMultplayerName(param))) {
-                //     console.log("Nome de jogador já em uso. Escolha outro nome.");
-                //     return;
-                // }
 
                 setMyPlayerId(socket.id);
                 let msg = {
@@ -80,11 +75,7 @@ console.log(players)
         });
 
         socket.on('currentPlayers', (serverPlayers) => {
-            // if (temRegistro(serverPlayers, param) || temRegistro(serverPlayers, getMultplayerName(param))) {
-            //     console.log("Nome de jogador já em uso. Escolha outro nome.");
-            //     return;
-            // }
-                setPlayers(serverPlayers);
+            setPlayers(serverPlayers);
         });
 
         socket.on('playerDisconnected', (playerId) => {
