@@ -589,9 +589,7 @@ let playersFiltered = removePlayersById(players, "MultPlayer"+idPlayer)
         }
     }, [idPlayer, multiplayerEn]); // Adiciona as dependências necessárias
 
-    }, [players, myPlayerId]); // Depende de players e myPlayerId
-
-    return (isClient&&<html lang="en">
+    return (isClient && <html lang="en">
         <Head/>
         <NavBar/>
          <span style={{Color: "greem"}}>SALA: {idSessao}</span>

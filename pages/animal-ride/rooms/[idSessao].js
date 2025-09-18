@@ -95,8 +95,7 @@ function App() {
             socket.off('playerDisconnected');
             socket.disconnect();
         };
-
-    }, [idSessao, players]); // Add idSessao and players dependencies
+    }); // End useEffect
 
     const sendPlayerMovement = (player) => {
         socket.emit('playerMovement', player);
