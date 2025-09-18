@@ -6,27 +6,40 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "server": "nodemon sala.js",
+    "wave": "concurrently --raw  \"npm run dev\" \"npm run server \"",
     "lint": "next lint"
   },
   "dependencies": {
     "@types/jquery": "^3.5.29",
     "bootstrap": "^3.3.7",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "handy-storage": "^2.1.6",
     "jquery": "1.11.0",
     "melonjs": "^17.0.0",
     "next": "^14.1.2",
-    "node": "^18.17.0",
+    "node": "^21.7.3",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.8",
     "react-dom": "^18.2.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "swal": "^0.1.0",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "ts-node": "^10.9.2",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.29",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/ws": "^8.5.13",
+    "concurrently": "^9.1.2",
     "eslint": "^8",
     "eslint-config-next": "14.1.2",
+    "nodemon": "^3.1.9",
     "typescript": "^5"
   }
 }

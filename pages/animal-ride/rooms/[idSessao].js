@@ -1,24 +1,23 @@
 import '../../../css/Styles.css'
+import '../../../js/util.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import NavBar from "../../../Components/NavBar"
-import Head from "../../../Components/Head"
-import Footer from "../../../Components/Footer"
-import GamePad from "../../../Components/GamePad"
+
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/router';
-import * as me from 'melonjs'
-import DataManifest from '../../../manifest.js';
-import PlayScreen from '../../../js/stage/play.js';
-import TitleScreen from '../../../js/stage/title.js';
-import {PlayerEntity, CoinEntity, EnemyEntity} from '../../../js/renderables/entities.js';
+import io from 'socket.io-client';
+import GameCanvas from '../../GameCanvas'; // Seu componente MelonJS
+import Aguardando from '../../../Components/Aguardando';
+ // Conecte-se ao seu servidor
 
+function App() {
+    const [players, setPlayers] = useState({});
+    const [myPlayerId, setMyPlayerId] = useState(null);
+    const [mainPlayer, setMainPlayer] = useState([])
+    const [idSessao, setIdSessao] = useState("0")
+    const [mode, setMode] = useState(null)
+    const [waiting, setWaiting] = useState(true);
+   
 
-export default function Rooms (props) {
-  const [mainPlayer, setMainPlayer] = useState()
-  const [isClient, setIsClient] = useState(false)
-  const [idSessao, setIdSessao] = useState(0)
-
-  function getQueryVariable(variable) {
+    function getQueryVariable(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
@@ -28,93 +27,135 @@ export default function Rooms (props) {
             }
         }
     }
-  useEffect(() => {
-    var param = getQueryVariable("player");
-    setMainPlayer(param)
-    setIdSessao(props.id)
-    window.$ = window.jQuery = require('jquery')
-         me.device.onReady(() => {
-            setIsClient(true)
-         // Initialize the video.
-         if (!me.video.init(640, 480, {parent : "screen", scale : "auto"})) {
-           //  swal("Your browser does not support HTML5 canvas.");
-             return;
-         } 
-      
-         me.loader.preload(DataManifest, function() {
-             // set the user defined game stages
-            // me.state.set(me.state.MENU, new TitleScreen());
+
+    useEffect(() => {
+           
+            if (Object.keys(players).length == 0)
+            setWaiting(true) 
+
+            if (mode=="versus" && Object.keys(players).length == 4)
+            setWaiting(false) 
+
+            if (mode=="single" && Object.keys(players).length == 1)
+            setWaiting(false) 
+        
+        },[players])
+
+    useEffect(() => {
+        window.$ = window.jQuery = require('jquery')
+        const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
+        setIdSessao(pathname)
+        var param = getQueryVariable("player");
+        var modo = getQueryVariable("mode")
+        
+        setMode(modo)
+        setMainPlayer(param)
+        const socket = io(`http://${window.location.hostname}:3001`);
          
-             // set a global fading transition for the screen
-             me.state.transition("fade", "#FFFFFF", 250);
-             switch(param) {
-                 case("mainPlayer"): {
-                     me.pool.register("mainPlayer", PlayerEntity);
-                     me.pool.register("mainPlayerDark", CoinEntity);
-                     me.pool.register("mainPlayerTeff", CoinEntity);
-                     me.pool.register("mainPlayerSnow", CoinEntity);
-                     break 
-                 } 
-                 case("mainPlayerTeff"):{ 
-                     me.pool.register("mainPlayerTeff", PlayerEntity);
-                     me.pool.register("mainPlayerDark", CoinEntity);
-                     me.pool.register("mainPlayer", CoinEntity);
-                     me.pool.register("mainPlayerSnow", CoinEntity);
-                     break 
-                 }
-                 case("mainPlayerSnow"):{
-                     me.pool.register("mainPlayerSnow", PlayerEntity);
-                     me.pool.register("mainPlayerDark", CoinEntity);
-                     me.pool.register("mainPlayer", CoinEntity);
-                     me.pool.register("mainPlayerTeff", CoinEntity);
-                     break 
-                 } 
-                 case ("mainPlayerDark"):{
-                     me.pool.register("mainPlayerSnow", CoinEntity);
-                     me.pool.register("mainPlayerDark", PlayerEntity);
-                     me.pool.register("mainPlayer", CoinEntity);
-                     me.pool.register("mainPlayerTeff", CoinEntity);
-                     break 
-                 }
-             }
-             me.pool.register("CoinEntity", CoinEntity);
-             me.pool.register("EnemyEntity", EnemyEntity);
-               // enable the keyboard
-               me.input.bindKey(me.input.KEY.LEFT,  "left");
-               me.input.bindKey(me.input.KEY.RIGHT, "right");
-               // map X, Up Arrow and Space for jump
-               //me.input.bindKey(me.input.KEY.X,      "jump", true);
-               me.input.bindKey(me.input.KEY.UP, "jump", false);
-           //  me.input.bindKey(me.input.KEY.SPACE,  "jump", true);
-               // Start the game.
-             //  me.state.set(me.state.MENU, new TitleScreen());
-              // me.state.change(me.state.MENU);
-              me.pool.register(param, PlayerEntity);
-              me.state.set(me.state.PLAY, new PlayScreen());
-              me.state.change(me.state.PLAY)
-              me.state.transition("start")
-         })
-        //me.state.set(me.state.PLAY, new PlayScreen());
-     });
-       }, [mainPlayer])
+          
+           socket.on('connect', () => {
+console.log(players)
+                // if (temRegistro(players, param) || temRegistro(players, getMultplayerName(param))) {
+                //     console.log("Nome de jogador já em uso. Escolha outro nome.");
+                //     return;
+                // }
 
-  if (!isClient)
-  return(<></>)
-  else
-    return (isClient&&
-    <html>
-        <Head/>
-        <body>
-            <NavBar/>
-            <span>Sessâo: {idSessao}</span>
-            <div id="container">
-              <div id="screen"></div>
-            </div>
-            
-            <GamePad name=""/>
-            <Footer name="Room"/>
-        </body>
-    </html>
-    )
+                setMyPlayerId(socket.id);
+                let msg = {
+                    idSessao: idSessao,
+                    idPlayer: socket.id,
+                    player: param
+                }
+
+                socket.emit("player", JSON.stringify(msg))
+
+                if (modo=="versus" && !temRegistro(players, getMultplayerName(param))) {
+                    let msgMultPlayer = {
+                        idSessao: idSessao,
+                        idPlayer: "MultPlayer"+socket.id,
+                        player: getMultplayerName(param)
+                    }
+                    socket.emit("player", JSON.stringify(msgMultPlayer))
+                }
+        });
+
+        socket.on('currentPlayers', (serverPlayers) => {
+            // if (temRegistro(serverPlayers, param) || temRegistro(serverPlayers, getMultplayerName(param))) {
+            //     console.log("Nome de jogador já em uso. Escolha outro nome.");
+            //     return;
+            // }
+                setPlayers(serverPlayers);
+        });
+
+        socket.on('playerDisconnected', (playerId) => {
+            setPlayers(prevPlayers => {
+                const newPlayers = { ...prevPlayers };
+                delete newPlayers[playerId];
+                return newPlayers;
+            });
+        });
+
+        return () => {
+            socket.off('connect');
+            socket.off('currentPlayers');
+            socket.off('newPlayer');
+            socket.off('playerMoved');
+            socket.off('playerDisconnected');
+            socket.disconnect();
+        };
+
+    },[]);
+
+    const sendPlayerMovement = (player) => {
+        socket.emit('playerMovement', player);
+    };
+
+
+if (waiting)
+    return(<Aguardando onDone={() => setWaiting(false)}></Aguardando>)
+else
+    return (
+           <GameCanvas
+                players={players}
+                myPlayerId={myPlayerId}
+                onPlayerMove={sendPlayerMovement}
+            />
+    );
 }
+  function temRegistro(players, value) {
+   let retorno = false
+    Object.keys(players).forEach(key => {
+        if (players[key].player === value) {
+          retorno = true
+        }
+    });
 
+    return retorno
+  }
+function getMultplayerName(player) {
+  let retorno = "";   
+      switch(player) {
+          case("mainPlayer"): {
+                retorno = "multPlayerNina"
+                break;
+          } 
+
+          case("mainPlayerTeff"):{ 
+            retorno = "multPlayerTeff"
+            break;
+          }
+
+          case("mainPlayerSnow"):{
+            retorno = "multPlayerSnow"
+            break;
+          } 
+
+          case ("mainPlayerDark"):{
+            retorno = "multPlayerDark"
+            break;
+          }
+      }
+
+    return retorno;
+}
+export default App;

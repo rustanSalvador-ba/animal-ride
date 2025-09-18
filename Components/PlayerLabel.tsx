@@ -1,4 +1,4 @@
-import  React from 'react'
+import React from 'react'
 import nina from "../public/data/img/sprite/nina/nina.png"
 import snow from "../public/data/img/sprite/snow/snow.png"
 import teff from "../public/data/img/sprite/teff/teff.png"

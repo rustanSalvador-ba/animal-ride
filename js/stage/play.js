@@ -1,5 +1,4 @@
 import * as me from 'melonjs'
-import * as HUD from '../renderables/hud/container.js'
 import data from '../../data/data.js'
 
 export default class PlayScreen extends me.Stage {
@@ -11,7 +10,7 @@ export default class PlayScreen extends me.Stage {
         // game.world.addChild(new ColorLayer("background", "#202020"));
 
         // // add a font text display object
-        // HUD.game.world.addChild(new me.BitmapText(game.viewport.width / 2, game.viewport.height / 2,  {
+        // HUDContainer.game.world.addChild(new me.BitmapText(game.viewport.width / 2, game.viewport.height / 2,  {
         //     font : "PressStart2P",
         //     size : 4.0,
         //     textBaseline : "middle",
@@ -29,7 +28,6 @@ export default class PlayScreen extends me.Stage {
     }
 
     onDestroyEvent() {
-		// remove the HUD from the game world
 		me.game.world.removeChild(this.HUD);
 	}
 };

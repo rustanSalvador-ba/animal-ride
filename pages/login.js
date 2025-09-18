@@ -1,5 +1,3 @@
-import ReactDOM from 'react-dom';
-import jQuery from 'jquery';
 import '../css/Styles.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import login from "../js/util.js"

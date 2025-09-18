@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="left-down" width="1000" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="89">
+<map version="1.10" tiledversion="1.10.0" orientation="orthogonal" renderorder="left-down" width="1000" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="93">
+ <editorsettings>
+  <export format="tmx"/>
+ </editorsettings>
  <tileset firstgid="1" name="mapa2" tilewidth="32" tileheight="32" tilecount="5440" columns="170">
   <image source="../../../../../corona_warface/data/img/mapa2.png" width="5444" height="1024"/>
  </tileset>
@@ -15,28 +18,52 @@
   </data>
  </layer>
  <objectgroup id="3" name="player" offsetx="0" offsety="1.13687e-13">
-  <object id="3" name="mainPlayerSnow" x="79.5455" y="899.242" width="156.333" height="103">
+  <object id="3" name="mainPlayerSnow" x="70.4546" y="890.151" width="156.333" height="103">
    <properties>
     <property name="framewidth" type="int" value="147"/>
     <property name="image" value="snow"/>
    </properties>
   </object>
-  <object id="86" name="mainPlayerTeff" x="79.5455" y="899.242" width="156.333" height="103">
+  <object id="86" name="mainPlayerTeff" x="58.3334" y="229.545" width="156.333" height="103">
    <properties>
     <property name="framewidth" type="int" value="148"/>
     <property name="image" value="teff"/>
    </properties>
   </object>
-  <object id="87" name="mainPlayerDark" x="79.5455" y="899.242" width="156.333" height="103">
+  <object id="87" name="mainPlayerDark" x="55.3031" y="441.666" width="156.333" height="103">
    <properties>
     <property name="framewidth" type="int" value="148"/>
     <property name="image" value="dark"/>
    </properties>
   </object>
-  <object id="88" name="mainPlayer" x="79.5455" y="899.242" width="156.333" height="103">
+  <object id="88" name="mainPlayer" x="67.4243" y="662.878" width="156.333" height="103">
    <properties>
     <property name="framewidth" type="int" value="148"/>
     <property name="image" value="nina"/>
+   </properties>
+  </object>
+  <object id="89" name="multPlayerTeff" x="359.364" y="692.545" width="186.633" height="103">
+   <properties>
+    <property name="framewidth" type="int" value="148"/>
+    <property name="image" value="mult_teff"/>
+   </properties>
+  </object>
+  <object id="90" name="multPlayerSnow" x="370.455" y="493.333" width="156.333" height="103">
+   <properties>
+    <property name="framewidth" type="int" value="147"/>
+    <property name="image" value="mult_snow"/>
+   </properties>
+  </object>
+  <object id="91" name="multPlayerDark" x="362.333" y="267.666" width="156.333" height="103">
+   <properties>
+    <property name="framewidth" type="int" value="148"/>
+    <property name="image" value="mult_dark"/>
+   </properties>
+  </object>
+  <object id="92" name="multPlayerNina" x="361.242" y="891.303" width="156.333" height="103">
+   <properties>
+    <property name="framewidth" type="int" value="148"/>
+    <property name="image" value="mult_nina"/>
    </properties>
   </object>
   <object id="26" name="CoinEntity" x="1008.33" y="816.667" width="41.67" height="46.67">
@@ -53,7 +80,7 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="EnemyEntity">
-  <object id="25" name="CoinEntity" x="775" y="916.667" width="41.67" height="46.67">
+  <object id="25" name="CoinEntity" x="874.242" y="905.303" width="41.67" height="46.67">
    <properties>
     <property name="framewidth" type="int" value="32"/>
     <property name="image" value="spinning_coin_gold"/>
@@ -377,7 +404,7 @@
     <property name="image" value="spinning_coin_gold"/>
    </properties>
   </object>
-  <object id="84" name="EnemyEntity" x="450" y="883.333" width="174" height="116">
+  <object id="84" name="EnemyEntity" x="605.758" y="874.242" width="174" height="116">
    <properties>
     <property name="framewidth" type="int" value="144"/>
     <property name="image" value="dark_sprite"/>
