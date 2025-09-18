@@ -6,28 +6,50 @@ export default class PlayScreen extends me.Stage {
      *  action to perform on state change
      */
     onResetEvent() {
-        // add a gray background to the default Stage
-        // game.world.addChild(new ColorLayer("background", "#202020"));
+        try {
+            // Ensure the game world is ready
+            if (!me.game.world) {
+                console.error("Game world not initialized");
+                return;
+            }
 
-        // // add a font text display object
-        // HUDContainer.game.world.addChild(new me.BitmapText(game.viewport.width / 2, game.viewport.height / 2,  {
-        //     font : "PressStart2P",
-        //     size : 4.0,
-        //     textBaseline : "middle",
-        //     textAlign : "center",
-        //     text : "Aventuras de Nina"
-        // }));
-        me.level.load("mapa3");
-		// reset the score
-		data.score = 0;
+            // Configure WebGL context if available
+            if (me.video.renderer && me.video.renderer.WebGLRenderer) {
+                const gl = me.video.renderer.context;
+                if (gl) {
+                    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+                    gl.enable(gl.BLEND);
+                    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+                }
+            }
 
-		// add our HUD to the game world
-		this.HUD = new me.Container();
-		me.game.world.addChild(this.HUD);
-        
+            // Load level with error handling
+            me.level.load("mapa3", {
+                onLoaded: () => {
+                    console.log("Map loaded successfully");
+                    // reset the score
+                    data.score = 0;
+
+                    // add our HUD to the game world
+                    this.HUD = new me.Container(0, 0, me.game.viewport.width, me.game.viewport.height);
+                    me.game.world.addChild(this.HUD);
+                },
+                onError: (error) => {
+                    console.error("Error loading map:", error);
+                }
+            });
+        } catch (error) {
+            console.error("Error in onResetEvent:", error);
+        }
     }
 
     onDestroyEvent() {
-		me.game.world.removeChild(this.HUD);
-	}
-};
+        try {
+            if (this.HUD && me.game.world) {
+                me.game.world.removeChild(this.HUD);
+            }
+        } catch (error) {
+            console.error("Error in onDestroyEvent:", error);
+        }
+    }
+}

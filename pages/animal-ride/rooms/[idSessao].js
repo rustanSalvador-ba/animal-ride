@@ -43,7 +43,6 @@ function App() {
 
     useEffect(() => {
         window.$ = window.jQuery = require('jquery')
-    }, [mode]); // Add mode dependency
         const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
         setIdSessao(pathname)
         var param = getQueryVariable("player");
@@ -55,6 +54,11 @@ function App() {
          
           
            socket.on('connect', () => {
+console.log(players)
+                // if (temRegistro(players, param) || temRegistro(players, getMultplayerName(param))) {
+                //     console.log("Nome de jogador já em uso. Escolha outro nome.");
+                //     return;
+                // }
 
                 setMyPlayerId(socket.id);
                 let msg = {
@@ -76,7 +80,11 @@ function App() {
         });
 
         socket.on('currentPlayers', (serverPlayers) => {
-            setPlayers(serverPlayers);
+            // if (temRegistro(serverPlayers, param) || temRegistro(serverPlayers, getMultplayerName(param))) {
+            //     console.log("Nome de jogador já em uso. Escolha outro nome.");
+            //     return;
+            // }
+                setPlayers(serverPlayers);
         });
 
         socket.on('playerDisconnected', (playerId) => {
@@ -95,7 +103,8 @@ function App() {
             socket.off('playerDisconnected');
             socket.disconnect();
         };
-    }); // End useEffect
+
+    },[]);
 
     const sendPlayerMovement = (player) => {
         socket.emit('playerMovement', player);

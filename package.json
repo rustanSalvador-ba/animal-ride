@@ -31,6 +31,8 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@next/env": "^15.5.3",
+    "@next/swc-win32-x64-msvc": "^15.5.3",
     "@types/jquery": "^3.5.29",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -38,7 +40,7 @@
     "@types/ws": "^8.5.13",
     "concurrently": "^9.1.2",
     "eslint": "^8",
-    "eslint-config-next": "14.1.2",
+    "eslint-config-next": "^14.1.2",
     "nodemon": "^3.1.9",
     "typescript": "^5"
   }

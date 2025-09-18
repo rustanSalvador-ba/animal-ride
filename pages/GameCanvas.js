@@ -12,6 +12,7 @@ import io from 'socket.io-client';
 
 const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
     const canvasRef = useRef(null);
+    const initialized = useRef(false);
     const [mainPlayer, setMainPlayer] = useState([])
     let myPlayerEntity = null; // Para manter a referência ao jogador local
     const playerEntities = ["mainPlayer", "mainPlayerTeff", "mainPlayerSnow", "mainPlayerDark"];
@@ -33,6 +34,21 @@ const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
     }
 
      useEffect(() => {
+        // Prevent duplicate initialization
+        if (initialized.current) return;
+        initialized.current = true;
+
+        // Cleanup function to stop game and remove canvas on unmount
+        const cleanup = () => {
+            if (me.state.isRunning()) {
+                me.state.stop();
+                const canvas = document.querySelector('canvas');
+                if (canvas) {
+                    canvas.remove();
+                }
+            }
+        };
+
         window.$ = window.jQuery = require('jquery')
         const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
         var param = getQueryVariable("player");
@@ -41,12 +57,20 @@ const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
         setIsClient(true)
         setMainPlayer(param)
 
+        // Remove any existing canvas
+        cleanup();
+
         me.device.onReady(() => {
-          
-         if (!me.video.init(1040, 1080,  {parent : "screen", scale : "auto"})) {
-             //swal("Your browser does not support HTML5 canvas.");
-             return;
-         } 
+          // Clear any existing canvas first
+          const existingCanvas = document.querySelector('#screen canvas');
+          if (existingCanvas) {
+              existingCanvas.remove();
+          }
+
+          if (!me.video.init(1040, 1080,  {parent : "screen", scale : "auto"})) {
+              console.error("Your browser does not support HTML5 canvas.");
+              return;
+          } 
  
 
          me.loader.preload(DataManifest, function() {
@@ -587,9 +611,10 @@ let playersFiltered = removePlayersById(players, "MultPlayer"+idPlayer)
         if (me.game.world ) {
           me.state.current().onResetEvent(); // Re-renderiza jogadores
         }
-    }, [idPlayer, multiplayerEn]); // Adiciona as dependências necessárias
 
-    return (isClient && <html lang="en">
+    }, [players, myPlayerId]); // Depende de players e myPlayerId
+
+    return (isClient&&<html lang="en">
         <Head/>
         <NavBar/>
          <span style={{Color: "greem"}}>SALA: {idSessao}</span>

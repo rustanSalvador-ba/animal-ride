@@ -1,0 +1,165 @@
+"use client";
+
+import '../../../css/Styles.css'
+import '../../../js/util.js'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+import { useState, useEffect } from 'react'
+import io from 'socket.io-client';
+import GameCanvas from '../../GameCanvas';
+import Aguardando from '../../../Components/Aguardando';
+
+const IdSessao = () => {
+    const [players, setPlayers] = useState({});
+    const [myPlayerId, setMyPlayerId] = useState(null);
+    const [mainPlayer, setMainPlayer] = useState('');
+    const [idSessao, setIdSessao] = useState("0");
+    const [mode, setMode] = useState(null);
+    const [waiting, setWaiting] = useState(true);
+    const [socket, setSocket] = useState(null);
+
+    const getQueryVariable = (variable) => {
+        if (typeof window === 'undefined') return null;
+        const query = window.location.search.substring(1);
+        const vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars[i].split("=");
+            if (pair[0] === variable) {
+                return pair[1];
+            }
+        }
+        return null;
+    };
+
+    const getMultplayerName = (mainPlayer) => {
+        let retorno = "";
+        switch (mainPlayer) {
+            case "mainPlayerRed": {
+                retorno = "multPlayerRed";
+                break;
+            }
+            case "mainPlayerBlue": {
+                retorno = "multPlayerBlue";
+                break;
+            }
+            case "mainPlayerSnow": {
+                retorno = "multPlayerSnow";
+                break;
+            }
+            case "mainPlayerDark": {
+                retorno = "multPlayerDark";
+                break;
+            }
+        }
+        return retorno;
+    };
+
+    const temRegistro = (players, player) => {
+        let retorno = false;
+        Object.keys(players).forEach(id => {
+            if (players[id].player === player) {
+                retorno = true;
+            }
+        });
+        return retorno;
+    };
+
+    // Effect to handle player count and waiting state
+    useEffect(() => {
+        if (Object.keys(players).length === 0) {
+            setWaiting(true);
+        } else if (mode === "versus" && Object.keys(players).length === 4) {
+            setWaiting(false);
+        } else if (mode === "single" && Object.keys(players).length === 1) {
+            setWaiting(false);
+        }
+    }, [players, mode]);
+
+    // Effect to initialize jQuery
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            window.$ = window.jQuery = require('jquery');
+        }
+    }, []);
+
+    // Effect to initialize socket connection and game state
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
+        const param = getQueryVariable("player");
+        const modo = getQueryVariable("mode");
+
+        setIdSessao(pathname);
+        setMode(modo);
+        setMainPlayer(param);
+
+        const newSocket = io(`http://${window.location.hostname}:3001`);
+        setSocket(newSocket);
+
+        newSocket.on('connect', () => {
+            setMyPlayerId(newSocket.id);
+            const msg = {
+                idSessao: pathname,
+                idPlayer: newSocket.id,
+                player: param
+            };
+
+            newSocket.emit("player", JSON.stringify(msg));
+
+            if (modo === "versus" && !temRegistro(players, getMultplayerName(param))) {
+                const msgMultPlayer = {
+                    idSessao: pathname,
+                    idPlayer: "MultPlayer" + newSocket.id,
+                    player: getMultplayerName(param)
+                };
+                newSocket.emit("player", JSON.stringify(msgMultPlayer));
+            }
+        });
+
+        newSocket.on('currentPlayers', (serverPlayers) => {
+            setPlayers(serverPlayers);
+        });
+
+        newSocket.on('playerDisconnected', (playerId) => {
+            setPlayers(prevPlayers => {
+                const newPlayers = { ...prevPlayers };
+                delete newPlayers[playerId];
+                return newPlayers;
+            });
+        });
+
+        return () => {
+            if (newSocket) {
+                newSocket.off('connect');
+                newSocket.off('currentPlayers');
+                newSocket.off('newPlayer');
+                newSocket.off('playerMoved');
+                newSocket.off('playerDisconnected');
+                newSocket.disconnect();
+            }
+        };
+    }, [players]);
+
+    const sendPlayerMovement = (player) => {
+        if (socket) {
+            socket.emit('playerMovement', player);
+        }
+    };
+
+    if (waiting) {
+        return <Aguardando onDone={() => setWaiting(false)} />;
+    }
+
+    return (
+        <div>
+            <GameCanvas
+                players={players}
+                myPlayerId={myPlayerId}
+                onPlayerMove={sendPlayerMovement}
+            />
+        </div>
+    );
+};
+
+export default IdSessao;
