@@ -43,6 +43,7 @@ function App() {
 
     useEffect(() => {
         window.$ = window.jQuery = require('jquery')
+    }, [mode]); // Add mode dependency
         const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
         setIdSessao(pathname)
         var param = getQueryVariable("player");
@@ -95,7 +96,7 @@ function App() {
             socket.disconnect();
         };
 
-    },[]);
+    }, [idSessao, players]); // Add idSessao and players dependencies
 
     const sendPlayerMovement = (player) => {
         socket.emit('playerMovement', player);

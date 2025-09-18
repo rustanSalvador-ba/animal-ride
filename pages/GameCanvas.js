@@ -587,6 +587,7 @@ let playersFiltered = removePlayersById(players, "MultPlayer"+idPlayer)
         if (me.game.world ) {
           me.state.current().onResetEvent(); // Re-renderiza jogadores
         }
+    }, [idPlayer, multiplayerEn]); // Adiciona as dependências necessárias
 
     }, [players, myPlayerId]); // Depende de players e myPlayerId
 

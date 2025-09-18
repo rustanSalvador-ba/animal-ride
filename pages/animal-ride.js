@@ -32,7 +32,7 @@ export default function AnimalRide () {
       setSalas([...salas, sala])
     });
 
-  }, [])
+  }, [salas]) // Add salas dependency
   //salasServer = io(`http://${window.location.hostname}:3001`);
  
  
@@ -122,7 +122,7 @@ function add(e) {
                     {
                         salas.filter(e => e.name!=null)
                              .map((el) => {
-                            return (<div><Sala name={el.name} href={el.id} player={mainPlayer} mode={mode}></Sala></div>)
+                            return (<div key={el.id}><Sala name={el.name} href={el.id} player={mainPlayer} mode={mode}></Sala></div>)
                         })
                     }
               </div>
