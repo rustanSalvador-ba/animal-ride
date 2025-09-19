@@ -20,6 +20,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.8",
     "react-dom": "^18.2.0",
+    "sharp": "^0.34.4",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "sweetalert": "^2.1.2"
@@ -33,10 +34,11 @@
     "@types/ws": "^8.5.13",
     "concurrently": "^9.1.2",
     "eslint": "^8",
-    "eslint-config-next": "^14.1.2",
+    "eslint-config-next": "^14.2.32",
     "nodemon": "^3.1.9",
     "typescript": "^5"
   },
   "engines": {
     "node": ">=18.17.0"
-  }}
+  }
+}

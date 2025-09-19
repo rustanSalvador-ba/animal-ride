@@ -1,5 +1,4 @@
-import '../css/Styles.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 import login from "../js/util.js"
 import NavBar from "../Components/NavBar"
 import Head from "../Components/Head"
