@@ -20,10 +20,13 @@ const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
     const [isClient, setIsClient] = useState(false)
     const [idSessao, setIdSessao] = useState("0")
     const [idPlayer, setIdPlayer] = useState(myPlayerId)
-    const socket = io(`http://${window.location.hostname}:3001`);
+    const socket = io(`http://${window != undefined ? window.location.hostname:'localhost'}:3001`);
 
     function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
+    if(window == undefined){
+      return;
+    }
+      var query = window.location.search.substring(1);
     var vars = query.split("&");
         for (var i=0;i<vars.length;i++) {
         var pair = vars[i].split("=");
@@ -49,8 +52,11 @@ const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
             }
         };
 
-        window.$ = window.jQuery = require('jquery')
-        const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
+        if (window == undefined) {
+            window.$ = window.jQuery = require('jquery')
+            const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
+        }
+       
         var param = getQueryVariable("player");
         var mode = getQueryVariable("mode");
         setIdSessao(pathname)
