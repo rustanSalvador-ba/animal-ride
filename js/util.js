@@ -1,6 +1,5 @@
 import swal from 'sweetalert'
-import '../css/Styles.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
 
   export function queryString(parameter) {
     var loc = atob(location.search.substring(1, location.search.length));
