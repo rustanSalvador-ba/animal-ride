@@ -20,10 +20,10 @@ const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
     const [isClient, setIsClient] = useState(false)
     const [idSessao, setIdSessao] = useState("0")
     const [idPlayer, setIdPlayer] = useState(myPlayerId)
-    const socket = io(`http://${window != undefined ? window.location.hostname:'localhost'}:3001`);
+    const socket = io(`http://${typeof window !== 'undefined' ? window.location.hostname:'localhost'}:3001`);
 
     function getQueryVariable(variable) {
-    if(window == undefined){
+    if(typeof window === 'undefined'){
       return;
     }
       var query = window.location.search.substring(1);
@@ -52,8 +52,8 @@ const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
             }
         };
 
-        if (window == undefined) {
-            window.$ = window.jQuery = require('jquery')
+        if (typeof window !== 'undefined') {
+          window.$ = window.jQuery = require('jquery')
             const pathname = window.location.pathname.split("/animal-ride/rooms/")[1];
         }
        
