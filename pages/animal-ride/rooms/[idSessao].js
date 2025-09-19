@@ -1,6 +1,4 @@
-import '../../../css/Styles.css'
 import '../../../js/util.js'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useState, useEffect } from 'react'
 import io from 'socket.io-client';
