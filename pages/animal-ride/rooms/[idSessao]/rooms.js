@@ -2,7 +2,7 @@ import NavBar from "../../../../Components/NavBar"
 import Head from "../../../../Components/Head"
 import Footer from "../../../../Components/Footer"
 import { useState, useEffect } from 'react'
- 
+import CSS from '../../../../css/Styles.css';
 export default function Rooms () {
   const [isClient, setIsClient] = useState(false)
   useEffect(() => {
@@ -15,6 +15,7 @@ export default function Rooms () {
   else
     return (
     <html>
+      <CSS/>
         <Head/>
         <body>
             <NavBar/>

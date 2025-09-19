@@ -1,6 +1,5 @@
 import swal from 'sweetalert'
 
-
   export function queryString(parameter) {
     var loc = atob(location.search.substring(1, location.search.length));
     var param_value = false;

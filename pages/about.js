@@ -2,7 +2,7 @@ import NavBar from "../Components/NavBar"
 import Head from "../Components/Head"
 import Footer from "../Components/Footer"
 import { useState, useEffect } from 'react'
-
+import CSS from '../css/Styles.css';
  
 export default function About () {
   const [isClient, setIsClient] = useState(false)
@@ -17,6 +17,7 @@ export default function About () {
   else
     return (
     <html>
+        <CSS/>
         <Head/>
         <body>
             <NavBar/>

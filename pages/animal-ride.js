@@ -11,6 +11,8 @@ import InputRoom from '../Components/InputRoom'
 import data from "../salas.json"
 import '../js/util.js'
 
+
+
 export default function AnimalRide () {
   const [isClient, setIsClient] = useState(false)
   const [newRoomShow, setNewRoomShow] = useState("none")
@@ -106,6 +108,7 @@ function add(e) {
     else
      return (
     <html lang="en">
+    <CSS/>
     <Head/>
         <body>
             <NavBar/>

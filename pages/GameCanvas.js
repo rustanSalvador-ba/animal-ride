@@ -9,6 +9,7 @@ import DataManifest from '../manifest';
 import PlayScreen from '../js/stage/play.js';
 import {PlayerEntity, CoinEntity, EnemyEntity, MultPlayerEntity, EmptyEntity, MultPlayerEntitySnow, MultPlayerEntityNina, MultPlayerEntityTeff, MultPlayerEntityDark} from '../js/renderables/entities.js';
 import io from 'socket.io-client';
+import CSS from '../css/Styles.css';
 
 const GameCanvas = ({ players, myPlayerId, onPlayerMove }) => {
     const canvasRef = useRef(null);
